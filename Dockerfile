@@ -9,13 +9,12 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git ca-certificates && \
     mkdir -p /var/airnotifier/pemdir
 
-RUN git clone https://github.com/airnotifier/airnotifier.git /airnotifier
+RUN git clone https://github.com/AnthoDingo/airnotifier.git /airnotifier
 
 WORKDIR /airnotifier
 
 RUN pip install -r requirements.txt
 RUN sed -i 's/https = True/https = False/g' airnotifier.conf-sample
 
-ADD start.sh /airnotifier
-RUN chown root:root /airnotifier/start.sh && chmod 750 /airnotifier/start.sh
-ENTRYPOINT /airnotifier/start.sh
+RUN chmod 750 start.sh && sed -i -e 's/\r$//' /airnotifier/start.sh
+CMD /airnotifier/start.sh
